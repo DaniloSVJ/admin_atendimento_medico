@@ -38,14 +38,24 @@ use Cake\Database\TypeFactory;
 use Cake\Database\Type\StringType;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ConsoleErrorHandler;
-use Cake\Error\ErrorHandler;
+// use Cake\Error\ErrorHandler;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
+use Cake\Error\ErrorTrap;
+use Cake\Error\ExceptionTrap;
+use Cake\Core\Plugin;
 
+//Plugin::load('Gourmet/Faker');
+
+// Configure o tratamento de erros
+$errorTrap = new ErrorTrap();
+$errorTrap->register();
+$exceptionTrap = new ExceptionTrap();
+$exceptionTrap->register();
 /*
  * See https://github.com/josegonzalez/php-dotenv for API details.
  *
@@ -79,6 +89,8 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    Configure::load('adminlte', 'default');
+
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }
@@ -123,12 +135,16 @@ ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
  * Register application error and exception handlers.
  */
 $isCli = PHP_SAPI === 'cli';
+// if ($isCli) {
+//     (new ConsoleErrorHandler(Configure::read('Error')))->register();
+// } else {
+//     (new ErrorHandler(Configure::read('Error')))->register();
+// }
 if ($isCli) {
-    (new ConsoleErrorHandler(Configure::read('Error')))->register();
+    (new ErrorTrap(Configure::read('Error')))->register();
 } else {
-    (new ErrorHandler(Configure::read('Error')))->register();
+    (new ExceptionTrap(Configure::read('Error')))->register();
 }
-
 /*
  * Include the CLI bootstrap overrides.
  */
@@ -217,3 +233,34 @@ TypeFactory::map('time', StringType::class);
 //Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
 //Inflector::rules('irregular', ['red' => 'redlings']);
 //Inflector::rules('uninflected', ['dontinflectme']);
+if (!Configure::check('Theme.title')) {
+    Configure::write('Theme.title', 'AdminLTE');
+}
+
+if (!Configure::check('Theme.logo.mini')) {
+    Configure::write('Theme.logo.mini', '<b>A</b>LT');
+}
+
+if (!Configure::check('Theme.logo.large')) {
+    Configure::write('Theme.logo.large', '<b>Admin</b>LTE');
+}
+
+if (!Configure::check('Theme.login.show_remember')) {
+    Configure::write('Theme.login.show_remember', true);
+}
+
+if (!Configure::check('Theme.login.show_register')) {
+    Configure::write('Theme.login.show_register', true);
+}
+
+if (!Configure::check('Theme.login.show_social')) {
+    Configure::write('Theme.login.show_social', true);
+}
+
+if (!Configure::check('Theme.folder')) {
+    Configure::write('Theme.folder', ROOT);
+}
+
+if (!Configure::check('Theme.skin')) {
+    Configure::write('Theme.skin', 'blue');
+}

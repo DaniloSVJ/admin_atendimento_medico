@@ -164,28 +164,27 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <h2 style="color: #FFFFFF;">CCM</h2>
+                <h2>Admin Panel</h2>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="/agenda">Agenda</a></li>
-                <li><a href="/atendidos">Atendimentos Feitos</a></a></li>
-                <li><a href="/listamedicos">Lista de Médicos</a></li>
-
-
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="#usuarios">Usuários</a></li>
+                <li><a href="/atendimento">Atendimentos Médicos</a></li>
+                <li><a href="#receitas">Receitas Médicas</a></li>
+                <li><a href="#relatorios">Relatórios</a></li>
+                <li><a href="#configuracoes">Configurações</a></li>
                 <li><a href="#sair">Sair</a></li>
             </ul>
         </nav>
 
         <!-- Main Content -->
-
         <div class="main-content">
-        <div style="margin-left: 100px;" >
-            <h1 style="margin-bottom: 100px;">Clinica Celson Mariones</h1>
-        </div>
+            <h1>Bem-vindo ao Painel Administrativo</h1>
+            <p>Aqui você pode gerenciar todas as funcionalidades do sistema.</p>
             <div class="container">
-                <?= $this->Flash->render() ?>
-                <?= $this->fetch('content') ?>
-            </div>
+            <?= $this->Flash->render() ?>
+            <?= $this->fetch('content') ?>
+        </div>
         </div>
     </div>
 

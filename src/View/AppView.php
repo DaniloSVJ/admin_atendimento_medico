@@ -37,5 +37,7 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        //$this->setLayout('AdminLTE.default');  // Usando o layout padrão do AdminLTE
+        //$this->loadHelper('Form', ['className' => 'AdminLTE.Form']);
     }
 }

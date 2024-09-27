@@ -8,6 +8,7 @@ use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 
 return [
+
     /*
      * Debug Level:
      *
@@ -17,8 +18,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
-
+    //'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
     /*
      * Configure basic information about the application.
      *
@@ -95,13 +95,31 @@ return [
     /*
      * Configure the cache adapters.
      */
+    'debug' =>false,
+
     'Cache' => [
         'default' => [
             'className' => FileEngine::class,
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
+            'duration' => '+0 seconds',
         ],
-
+        'views' => [
+            'className' => 'File',
+            'duration' => '+0 seconds',
+            'prefix' => 'myapp_',
+            'path' => CACHE . 'views/',
+            'serialize' => true,
+            'mask' => 0664,
+        ],
+        'models' => [
+        'className' => 'File',
+        'duration' => '+0 seconds', // Cache de modelos para 2 segundos
+        'prefix' => 'myapp_',
+        'path' => CACHE . 'models/',
+        'serialize' => true,
+        'mask' => 0664,
+    ],
         /*
          * Configure the cache used for general framework caching.
          * Translation cache files are stored with this configuration.
@@ -113,7 +131,7 @@ return [
             'prefix' => 'myapp_cake_core_',
             'path' => CACHE . 'persistent' . DS,
             'serialize' => true,
-            'duration' => '+1 years',
+            'duration' => '+1 seconds',
             'url' => env('CACHE_CAKECORE_URL', null),
         ],
 
@@ -179,14 +197,16 @@ return [
      *   should be ignored in. Use this to ignore deprecations for plugins or parts of
      *   your application that still emit deprecations.
      */
-    'Error' => [
-        'errorLevel' => E_ALL,
-        'exceptionRenderer' => ExceptionRenderer::class,
-        'skipLog' => [],
-        'log' => true,
-        'trace' => true,
-        'ignoredDeprecationPaths' => [],
+'Error' => [
+    'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
+    'exceptionRenderer' => Cake\Error\ExceptionRenderer::class,
+    'skipLog' => [],
+    'log' => true,
+    'trace' => true,
+    'ignoredDeprecationPaths' => [
+        'C:\\Users\\user\\Documents\\atendimento_medico\\config\\bootstrap.php',
     ],
+],
 
     /*
      * Debugger configuration

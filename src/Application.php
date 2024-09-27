@@ -46,6 +46,7 @@ class Application extends BaseApplication
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
+        $this->addPlugin('AdminLTE');
 
         if (PHP_SAPI === 'cli') {
             $this->bootstrapCli();
@@ -65,6 +66,8 @@ class Application extends BaseApplication
         }
 
         // Load more plugins here
+        $this->addPlugin('CakeLte');
+
     }
 
     /**
